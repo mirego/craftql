@@ -129,8 +129,9 @@ class Query extends Schema {
             ->type(EntryInterface::class)
             ->use(new EntryQueryArguments)
             ->resolve(function ($root, $args, $context, $info) {
+                $entryStatus = !empty(@$args['includePending']) && @$args['includePending'] == true ? ['live', 'pending'] : ['live'];
                 return $this->getRequest()->entries(\craft\elements\Entry::find(), $root, $args, $context, $info)
-                ->status(['live', 'pending'])
+                ->status($entryStatus)
                 ->one();
             });
 
@@ -138,7 +139,10 @@ class Query extends Schema {
             ->type(EntryInterface::class)
             ->use(new EntryQueryArguments)
             ->resolve(function ($root, $args, $context, $info) {
-                return $this->getRequest()->entries(\craft\models\EntryDraft::find(), $root, $args, $context, $info)->one();
+                $entryStatus = !empty(@$args['includePending']) && @$args['includePending'] == true ? ['live', 'pending'] : ['live'];
+                return $this->getRequest()->entries(\craft\models\EntryDraft::find(), $root, $args, $context, $info)
+                ->status($entryStatus)
+                ->one();
             });
 
         $draftField->addIntArgument('draftId')->nonNull();

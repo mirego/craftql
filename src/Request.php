@@ -150,6 +150,8 @@ class Request
             unset($args['idNot']);
         }
 
+        unset($args['includePending']);
+
         if (empty($args['site']) && empty($args['siteId'])) {
             $criteria->site('*');
         }

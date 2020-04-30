@@ -47,6 +47,7 @@ class EntryQueryArguments extends FieldBehavior {
         $this->owner->addStringArgument('title');
         $this->owner->addStringArgument('type')->lists()->type($this->owner->getRequest()->entryTypes()->enum());
         $this->owner->addStringArgument('uri');
+        $this->owner->addBooleanArgument('includePending');
 
         $fieldService = \Yii::$container->get('craftQLFieldService');
         $arguments = $fieldService->getQueryArguments($this->owner->getRequest());
